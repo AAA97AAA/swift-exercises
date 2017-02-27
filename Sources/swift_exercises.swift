@@ -96,6 +96,9 @@ func ==(lhs: Move, rhs: Move) -> Bool {
     return lhs.id == rhs.id
 }
 
+
+
+
 // http://bulbapedia.bulbagarden.net/wiki/Statistic
 struct Stats {
     let hitpoints       : Int
@@ -126,6 +129,7 @@ func ==(lhs: Species, rhs: Species) -> Bool {
 // http://bulbapedia.bulbagarden.net/wiki/List_of_Pokémon_by_National_Pokédex_number
 
 // Dracaufeu
+/*
 let moveAirSlash = Move(id: 1, name: "Air Slash", description: "Air Slash deals damage and has a 30% chance of causing the target to flinch", category: Category.special, type: Type.flying, power: 75, accuracy: 95, powerpoints: 20, priority: 0)
 
 let moveDragonClaw = Move(id: 2, name: "Dragon Claw", description: "Dragon Claw deals damage with no additional effect.", category: Category.physical, type: Type.dragon, power: 80, accuracy: 100, powerpoints: 15, priority: 0)
@@ -136,11 +140,12 @@ let moveFlareBlitz = Move(id: 4, name: "Flare Blitz", description: "Flare Blitz 
 
 let moveGrowl = Move(id: 5, name: "Growl", description: "Growl lowers the target's Attack by one stage.", category: Category.status, type: Type.normal, power: 0, accuracy: 100, powerpoints: 40, priority: 0)
 
-let moveHeatWave = Move(id: 6, name: "Heat Wave", description: "Heat Wave deals damage and has a 10% chance of burning the target.", category: Category.special, type: Type.fire, power: 95, accuracy: 90, priority: 0)
+//let moveHeatWave = Move(id: 6, name: "Heat Wave", description: "Heat Wave deals damage and has a 10% chance of burning the target.", category: Category.special, type: Type.fire, power: 95, accuracy: 90, priority: 0)
 
 let charizardStat = Stats(hitpoints: 0, attack: 0, defense: 0, special_attack: 3, special_defense: 0, speed: 0)
 
 let charizard = Species(id: 006, name: "Charizard", evolutions: [], attacks: [moveAirSlash, moveDragonClaw, moveEmber, moveFlareBlitz, moveGrowl, moveHeatWave], type: (Type.fire, nil), base_values: charizardStat)
+*/
 
 // Pikachu
 let pikachuStats = Stats(hitpoints: 35, attack: 55, defense: 30, special_attack: 50,special_defense: 40, speed: 90)
@@ -148,8 +153,8 @@ let pikachuStats = Stats(hitpoints: 35, attack: 55, defense: 30, special_attack:
 let thunderShockAttack = Move(id: 84,
                                      name: "Thunder Shock",
                                      description: "paralyze target",
-                                     category: special,
-                                     type: electric,
+                                     category: Category.special,
+                                     type: Type.electric,
                                      power:40,
                                      accuracy:100,
                                      powerpoints:30,
@@ -161,7 +166,7 @@ let pikachu = Species(id: 025,
                       name: "Pikachu",
                       evolutions: [raichu],
                       attacks: [thunderShockAttack],
-                      type: (electric, nil),
+                      type: (Type.electric, nil),
                       base_values: pikachuStats
               )
 let raichuStats = Stats(hitpoints: 60, attack: 90, defense: 55, special_attack: 90,special_defense: 80, speed: 110)
@@ -170,10 +175,16 @@ let raichu = Species(id: 026,
                       name: "Raichu",
                       evolutions: [],
                       attacks: [thunderShockAttack],
-                      type: (electric, nil),
+                      type: (Type.electric, nil),
                       base_values: raichuStats
               )
 
+
+/*func valeur_nature(pokemon: Pokemon, ) -> Double {
+    if  {
+        body
+    }
+}*/
 
 struct Pokemon {
     let nickname          : String?
@@ -188,14 +199,14 @@ struct Pokemon {
     let individual_values : Stats
     let effort_values     : Stats
     var effective_stats   : Stats { // effective_stats for Generations I and II)
-                              get {
-                                  let hitpoints: Int = ((((species.base_values.hitpoints + individual_values.hitpoints)*2 + ((effort_values.hitpoints).rounded(.up)/4).rounded(.down))* level)/100).round(.down) + level + 10
-                                  let attack: Int = ((((species.base_values.attack + individual_values.attack)*2 + ((effort_values.attack).rounded(.up)/4).rounded(.down))* level)/100).round(.down) + 5
-                                  let defense: Int = ((((species.base_values.defense + individual_values.defense)*2 + ((effort_values.defense).rounded(.up)/4).rounded(.down))* level)/100).round(.down) + 5
-                                  let special_attack: Int = ((((species.base_values.special_attack + individual_values.special_attack)*2 + ((effort_values.special_attack).rounded(.up)/4).rounded(.down))* level)/100).round(.down) + 5
-                                  let special_defense: Int = ((((species.base_values.special_defense + individual_values.special_defense)*2 + ((effort_values.special_defense).rounded(.up)/4).rounded(.down))* level)/100).round(.down) + 5
-                                  let speed: Int = ((((species.base_values.speed + individual_values.speed)*2 + ((effort_values.speed).rounded(.up)/4).rounded(.down))* level)/100).round(.down) + 5
-                              }
+                             // chercher comment faire pour la multiplication par Nature
+                                  let hitpoints: Int = (((2*self.species.base_values.hitpoints + self.individual_values.hitpoints + (self.effort_values.hitpoints/4).round(.down))*self.level)/100).round(.down) + self.level + 10
+                                  let attack: Int = (((2*self.species.base_values.attack + self.individual_values.attack + (self.effort_values.attack/4).round(.down))*self.level)/100).round(.down)// * valeur_nature(self)
+                                  let defense: Int = (((2*self.species.base_values.defense + self.individual_values.defense + (self.effort_values.defense/4).round(.down))*self.level)/100).round(.down) // * Nature
+                                  let special_attack: Int = (((2*self.species.base_values.special_attack + self.individual_values.special_attack + (self.effort_values.special_attack/4).round(.down))*self.level)/100).round(.down) // * Nature
+                                  let special_defense: Int = (((2*self.species.base_values.special_defense + self.individual_values.special_defense + (self.effort_values.special_defense/4).round(.down))*self.level)/100).round(.down) // * Nature
+                                  let speed: Int = (((2*self.species.base_values.speed + self.individual_values.speed + (self.effort_values.speed/4).round(.down))*self.level)/100).round(.down) // * Nature
+
                             }
     // TODO: implement the effective stats as a computed property:
     // https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Properties.html#//apple_ref/doc/uid/TP40014097-CH14-ID259
@@ -213,28 +224,108 @@ struct Environment {
 }
 
 // http://bulbapedia.bulbagarden.net/wiki/Type/Type_chart
-func typeModifier(attacking: Type, defending : Type) -> Double {
+/*func typeModifier(attacking: Type, defending : Type) -> Double {
     // TODO: encode type/type chart
-    return 1
+
+    // Tout d'abord, définissons la "matrice" qui contient l'indice que l'on doit renvoyer: Génération VI
+    let Generation_VI_onward: [Type: [Type: Double]] = [
+    .normal:   [1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1],
+    .fighting: [1,2,1,0.5,0.5,1,2,0.5,0,2,1,1,1,1,0.5,2],
+    .flying:   [2,0.5,1,2,1,1,1,0.5,2,1,0.5,1,1,2,0.5,1],
+    .poison:   [1,1,1,1,1,1,0.5,0.5,0.5,1,0.5,0,1,1,2,1],
+    .ground:   [1,1,1,2,1,1,0,2,1,2,0.5,1,2,2,1,0.5],
+    .rock:     [1,1,1,1,1,1,0.5,2,1,0.5,1,2,1,0.5,2,1],
+    .bug:      [1,1,2,1,1,1,1,0.5,0.5,0.5,1,1,1,0.5,0.5,0.5],
+    .ghost:    [2,1,2,1,1,2,0.5,0,1,1,1,1,1,1,2,1],
+    .steel:    [1,1,1,2,1,1,0.5,1,1,1,1,1,1,2,1,1],
+    .fire:     [0.5,0.5,1,0.5,1,2,1,1,2,1,1,1,1,1,0.5,2],
+    .water:    [2,0.5,0.5,2,1,1,2,0.5,1,1,1,1,1,1,2,2],
+    .grass:    [1,1,2,0.5,0.5,1,1,1,0.5,1,1,1,1,0.5,0.5,2],
+    .electric: [0.5,1,0.5,0.5,2,0.5,1,1,1,0.5,1,1,1,1,2,1],
+    .psychic:  [1,1,1,1,1,2,0.5,0.5,1,1,0.5,1,1,1,2,1],
+    .ice:      [1,1,1,1,0.5,1,1,1,1,0.5,1,1,0,1,1,1],
+    .dragon:   [1,2,1,1,1,0.5,0.5,0.5,2,1,1,0.5,2,1,1,1],
+    .dark:     [1,1,1,1,1,1,0.5,1,1,1,1,1,1,2,1,0],
+    .fairy:    [0.5,1,1,1,1,1,2,1,1,1,1,1,2,1,1,0.5],
+               [1,2,1,0.5,1,1,1,1,0.5,0.5,1,1,1,1,1,2]]
+
+    // Définissons une matrice avec les différents types de type Type: On doit écrire dans l'ordre que c'est écrit sur le tableau de Bulbapedia
+    let matrices_types: [Type] = [Type.normal,
+                                  Type.fighting,
+                                  Type.flying,
+                                  Type.poison,
+                                  Type.ground,
+                                  Type.rock,
+                                  Type.bug,
+                                  Type.ghost,
+                                  Type.steel,
+                                  Type.fire,
+                                  Type.water,
+                                  Type.grass,
+                                  Type.electric,
+                                  Type.psychic,
+                                  Type.ice,
+                                  Type.dragon,
+                                  Type.dark,
+                                  Type.fairy]
+
+
+    // Retrouvons les indices pour renvoyer la bonne valeur avec index(of:)
+    let attacking_type_indice: Int = matrices_types.index(of: attacking)!
+    let defending_type_indice: Int = matrices_types.index(of: defending)!
+
+    return Double(Generation_VI_onward[attacking_type_indice][defending_type_indice])!
+  }
+
+*/
+
+/* COMMENTAIRE ORIGINE
+
+func calcule_valeur_damage(environment: Environment, pokemon: Pokemon, move: Move, target: Pokemon) -> Int {
+  let var1: Double = ((2*pokemon.level)/5) + 2;
+  let var2: Double = pokemon.power
+
+  let final_result: Int = var1*var2
 }
 
 // http://bulbapedia.bulbagarden.net/wiki/Damage
 func damage(environment : Environment, pokemon: Pokemon, move: Move, target: Pokemon) -> Int {
     // TODO
-    //let damage_value = ( (2*pokemon.level+10)*
-    let damage_value = 0;
-    return damage_value;
+      let damage_value = 0;
+    if move.category == Category.status {
+        return 0
+    }
+    else if move.category == Category.special {
+        let damage_value = calcule_valeur(environment: Environment, pokemon: Pokemon, move: Move, target: Pokemon);
+
+        return damage_value
+    }
+    else{
+        // commentaire prochaine ligne + comment on fait quand special defense stat ou special attack
+      //  let damage_value = ((((2*pokemon.level+10)*(pokemon.effective_stats.attack)*(pokemon.species.attacks.index(of: move).power))/(250*target.effective_stats.defense)) + 2) //* typeModifier(attacking: pokemon.species.type[0], defending : target.species.type[0]) // Utilisation du premier type mais a confirmer
+        // pour la variable modifier, on utilise valeur par formeule donné ou de la fonction juste en haut
+
+
+        return damage_value;
+  }
+}
+
+struct attacks{
+
+
 }
 
 struct State {
-      /*
-      Pokemon1: Pokemon;
-      Pokemon2: Pokemon;
+      let Pokemon1: Pokemon;
+      let Pokemon2: Pokemon;
+      let environement: Environment;
+      var all_attacks: [attacks];
 
-      */
-    // TODO: describe a battle state
+    // TODO: describe a battle
 }
 
 func battle(trainers: inout [Trainer], behavior: (State, Trainer) -> Move) -> () {
     // TODO: simulate battle
 }
+
+*/
